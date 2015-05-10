@@ -7,7 +7,9 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	
-	
+	public MainActivity() {
+		mainActivity = this;
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +27,30 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+	
+	public void clearScore(){
+		score = 0;
+		showScore();
+	}
+	
+	public void showScore(){
+		tvScore.setText(score+"");
+	}
+	
+	public void addScore(int s){
+		score+=s;
+		showScore();
+	}
+
+	private int score = 0;
+	private TextView tvScore;
+	
+	private static MainActivity mainActivity = null;
+	
+	public static MainActivity getMainActivity() {
+		return mainActivity;
+	}
+
 }
 	
 	

@@ -100,11 +100,35 @@ public class GameView extends GridLayout {
 			}
 		}
 	}
-	
+private void startGame(){
+		
+		MainActivity.getMainActivity().clearScore();
+		
+		for (int y = 0; y < 4; y++) {
+			for (int x = 0; x < 4; x++) {
+				cardsMap[x][y].setNum(0);
+			}
+		}
+		
+		addRandomNum();
+		addRandomNum();
+	}
+
 	
 	
 	private void addRandomNum(){
+		emptyPoints.clear();
 		
+		for (int y = 0; y < 4; y++) {
+			for (int x = 0; x < 4; x++) {
+				if (cardsMap[x][y].getNum()<=0) {
+					emptyPoints.add(new Point(x, y));
+				}
+			}
+		}
+		
+		Point p = emptyPoints.remove((int)(Math.random()*emptyPoints.size()));
+		cardsMap[p.x][p.y].setNum(Math.random()>0.1?2:4);
 	}
 	
 	
