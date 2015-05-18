@@ -133,13 +133,74 @@ private void startGame(){
 	
 	
 	private void swipeLeft(){
+	boolean merge = false;
+		
+		for (int y = 0; y < 4; y++) {
+			for (int x = 0; x < 4; x++) {
+				
+				for (int x1 = x+1; x1 < 4; x1++) {
+					if (cardsMap[x1][y].getNum()>0) {
+						
+						if (cardsMap[x][y].getNum()<=0) {
+							cardsMap[x][y].setNum(cardsMap[x1][y].getNum());
+							cardsMap[x1][y].setNum(0);
+							
+							x--;
+							
+							merge = true;
+						}else if (cardsMap[x][y].equals(cardsMap[x1][y])) {
+							cardsMap[x][y].setNum(cardsMap[x][y].getNum()*2);
+							cardsMap[x1][y].setNum(0);
+							
+							MainActivity.getMainActivity().addScore(cardsMap[x][y].getNum());
+							merge = true;
+						}
+						
+						break;
+					}
+				}
+			}
+		}
+		
+	
+		
+		}
 		
 		
- }
+ 
 	private void swipeRight(){
+		boolean merge = false;
+		
+		for (int y = 0; y < 4; y++) {
+			for (int x = 3; x >=0; x--) {
+				
+				for (int x1 = x-1; x1 >=0; x1--) {
+					if (cardsMap[x1][y].getNum()>0) {
+						
+						if (cardsMap[x][y].getNum()<=0) {
+							cardsMap[x][y].setNum(cardsMap[x1][y].getNum());
+							cardsMap[x1][y].setNum(0);
+							
+							x++;
+							merge = true;
+						}else if (cardsMap[x][y].equals(cardsMap[x1][y])) {
+							cardsMap[x][y].setNum(cardsMap[x][y].getNum()*2);
+							cardsMap[x1][y].setNum(0);
+							MainActivity.getMainActivity().addScore(cardsMap[x][y].getNum());
+							merge = true;
+						}
+						
+						break;
+					}
+				}
+			}
+		}
 		
 		
-	}
+		}
+		
+		
+	
 	private void swipeUp(){
 		
 		
