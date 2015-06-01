@@ -263,6 +263,37 @@ private void swipeDown(){
 
 		
 		}
+private void checkComplete(){
+	
+	boolean complete = true;
+	
+	ALL:
+	for (int y = 0; y < 4; y++) {
+		for (int x = 0; x < 4; x++) {
+			if (cardsMap[x][y].getNum()==0||
+					(x>0&&cardsMap[x][y].equals(cardsMap[x-1][y]))||
+					(x<3&&cardsMap[x][y].equals(cardsMap[x+1][y]))||
+					(y>0&&cardsMap[x][y].equals(cardsMap[x][y-1]))||
+					(y<3&&cardsMap[x][y].equals(cardsMap[x][y+1]))) {
+				
+				complete = false;
+				break ALL;
+			}
+		}
+	}
+	
+	if (complete) {
+		new AlertDialog.Builder(getContext()).setTitle("嗨！").setMessage("GG").setPositiveButton("再来一次？", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				startGame();
+			}
+		}).show();
+	}
+	
+}
+
 	
 	private Card[][] cardsMap = new Card[4][4];
 	private List<Point> emptyPoints = new ArrayList<Point>();
