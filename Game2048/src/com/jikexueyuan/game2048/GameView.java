@@ -161,14 +161,14 @@ private void startGame(){
 				}
 			}
 		}
-		
-	
-		
+		if (merge) {
+			addRandomNum();
+			checkComplete();
+		}
+
 		}
 		
-		
- 
-	private void swipeRight(){
+		private void swipeRight(){
 		boolean merge = false;
 		
 		for (int y = 0; y < 4; y++) {
@@ -194,6 +194,9 @@ private void startGame(){
 					}
 				}
 			}
+		}if (merge) {
+			addRandomNum();
+			checkComplete();
 		}
 		
 		
@@ -230,6 +233,11 @@ private void startGame(){
 				}
 			}
 		}
+		if (merge) {
+			addRandomNum();
+			checkComplete();
+		}
+
 		}
 	
 private void swipeDown(){
