@@ -83,7 +83,7 @@ public class GameView extends GridLayout {
 		
 		addCards(cardWidth,cardWidth);
 		
-		
+		startGame();
 	}
 	
 	private void addCards(int cardWidth,int cardHeight){
@@ -100,7 +100,8 @@ public class GameView extends GridLayout {
 			}
 		}
 	}
-private void startGame(){
+	
+	private void startGame(){
 		
 		MainActivity.getMainActivity().clearScore();
 		
@@ -113,10 +114,9 @@ private void startGame(){
 		addRandomNum();
 		addRandomNum();
 	}
-
-	
 	
 	private void addRandomNum(){
+		
 		emptyPoints.clear();
 		
 		for (int y = 0; y < 4; y++) {
@@ -128,12 +128,26 @@ private void startGame(){
 		}
 		
 		Point p = emptyPoints.remove((int)(Math.random()*emptyPoints.size()));
-		cardsMap[p.x][p.y].setNum(Math.random()>0.1?2:4);
+		double a = Math.random(); 
+		int b;
+		if (a <= 0.8){ b = 2;}
+		else if(a <= 0.9){ b= 4;}
+		else if(a <= 0.95){ b = 8;}
+		else if(a <= 0.97){ b = 16;}
+		else if(a <= 0.985){ b = 32;}
+		else if(a <= 0.993){ b = 64;}
+		else if(a <= 0.997){ b = 128;}
+		else if(a <= 0.999){ b = 256;}
+		else{b = 512;}
+
+		cardsMap[p.x][p.y].setNum(b);
+		
 	}
 	
 	
 	private void swipeLeft(){
-	boolean merge = false;
+		
+		boolean merge = false;
 		
 		for (int y = 0; y < 4; y++) {
 			for (int x = 0; x < 4; x++) {
@@ -161,14 +175,14 @@ private void startGame(){
 				}
 			}
 		}
+		
 		if (merge) {
 			addRandomNum();
 			checkComplete();
 		}
-
-		}
+	}
+	private void swipeRight(){
 		
-		private void swipeRight(){
 		boolean merge = false;
 		
 		for (int y = 0; y < 4; y++) {
@@ -194,18 +208,16 @@ private void startGame(){
 					}
 				}
 			}
-		}if (merge) {
+		}
+		
+		if (merge) {
 			addRandomNum();
 			checkComplete();
 		}
-		
-		
-		}
-		
-		
-	
+	}
 	private void swipeUp(){
-	boolean merge = false;
+		
+		boolean merge = false;
 		
 		for (int x = 0; x < 4; x++) {
 			for (int y = 0; y < 4; y++) {
@@ -233,75 +245,77 @@ private void startGame(){
 				}
 			}
 		}
+		
 		if (merge) {
 			addRandomNum();
 			checkComplete();
 		}
-
-		}
-	
-private void swipeDown(){
-	
-	boolean merge = false;
-	
-	for (int x = 0; x < 4; x++) {
-		for (int y = 3; y >=0; y--) {
-			
-			for (int y1 = y-1; y1 >=0; y1--) {
-				if (cardsMap[x][y1].getNum()>0) {
-					
-					if (cardsMap[x][y].getNum()<=0) {
-						cardsMap[x][y].setNum(cardsMap[x][y1].getNum());
-						cardsMap[x][y1].setNum(0);
+	}
+	private void swipeDown(){
+		
+		boolean merge = false;
+		
+		for (int x = 0; x < 4; x++) {
+			for (int y = 3; y >=0; y--) {
+				
+				for (int y1 = y-1; y1 >=0; y1--) {
+					if (cardsMap[x][y1].getNum()>0) {
 						
-						y++;
-						merge = true;
-					}else if (cardsMap[x][y].equals(cardsMap[x][y1])) {
-						cardsMap[x][y].setNum(cardsMap[x][y].getNum()*2);
-						cardsMap[x][y1].setNum(0);
-						MainActivity.getMainActivity().addScore(cardsMap[x][y].getNum());
-						merge = true;
+						if (cardsMap[x][y].getNum()<=0) {
+							cardsMap[x][y].setNum(cardsMap[x][y1].getNum());
+							cardsMap[x][y1].setNum(0);
+							
+							y++;
+							merge = true;
+						}else if (cardsMap[x][y].equals(cardsMap[x][y1])) {
+							cardsMap[x][y].setNum(cardsMap[x][y].getNum()*2);
+							cardsMap[x][y1].setNum(0);
+							MainActivity.getMainActivity().addScore(cardsMap[x][y].getNum());
+							merge = true;
+						}
+						
+						break;
 					}
-					
-					break;
 				}
 			}
 		}
-	}
-
 		
+		if (merge) {
+			addRandomNum();
+			checkComplete();
 		}
-private void checkComplete(){
+	}
 	
-	boolean complete = true;
-	
-	ALL:
-	for (int y = 0; y < 4; y++) {
-		for (int x = 0; x < 4; x++) {
-			if (cardsMap[x][y].getNum()==0||
-					(x>0&&cardsMap[x][y].equals(cardsMap[x-1][y]))||
-					(x<3&&cardsMap[x][y].equals(cardsMap[x+1][y]))||
-					(y>0&&cardsMap[x][y].equals(cardsMap[x][y-1]))||
-					(y<3&&cardsMap[x][y].equals(cardsMap[x][y+1]))) {
+	private void checkComplete(){
+		
+		boolean complete = true;
+		
+		ALL:
+		for (int y = 0; y < 4; y++) {
+			for (int x = 0; x < 4; x++) {
+				if (cardsMap[x][y].getNum()==0||
+						(x>0&&cardsMap[x][y].equals(cardsMap[x-1][y]))||
+						(x<3&&cardsMap[x][y].equals(cardsMap[x+1][y]))||
+						(y>0&&cardsMap[x][y].equals(cardsMap[x][y-1]))||
+						(y<3&&cardsMap[x][y].equals(cardsMap[x][y+1]))) {
+					
+					complete = false;
+					break ALL;
+				}
+			}
+		}
+		
+		if (complete) {
+			new AlertDialog.Builder(getContext()).setTitle("浣犲ソ").setMessage("娓告垙缁撴潫").setPositiveButton("閲嶆潵", new DialogInterface.OnClickListener() {
 				
-				complete = false;
-				break ALL;
-			}
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					startGame();
+				}
+			}).show();
 		}
+		
 	}
-	
-	if (complete) {
-		new AlertDialog.Builder(getContext()).setTitle("嗨！").setMessage("GG").setPositiveButton("再来一次？", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				startGame();
-			}
-		}).show();
-	}
-	
-}
-
 	
 	private Card[][] cardsMap = new Card[4][4];
 	private List<Point> emptyPoints = new ArrayList<Point>();
